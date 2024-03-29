@@ -236,6 +236,11 @@ public:
     OneToMany() noexcept
     {}
 
+	~OneToMany()
+	{
+		clear();
+	}
+
     /**
      @brief Insert a pair into the set.
      The rule for one-to-many is that if the right value is part of an existing pair in the set, that relation will be erased.
@@ -505,6 +510,11 @@ public:
     void clear() noexcept
     {
         m_RightToLeft.clear();
+		
+		for (auto l2r : m_LeftToRight)
+		{
+			delete l2r.second;
+		}
         m_LeftToRight.clear();
     }
 
@@ -732,6 +742,11 @@ public:
     ManyToMany() noexcept
     : m_Count(0)
     {}
+
+	~ManyToMany()
+	{
+		clear();
+	}
 
     /**
      @brief Insert a pair into the set.
@@ -1052,7 +1067,16 @@ public:
      */
     void clear() noexcept
     {
+		for (auto l2r : m_RightToLeft)
+		{
+			delete l2r.second;
+		}
         m_RightToLeft.clear();
+		
+		for (auto l2r : m_LeftToRight)
+		{
+			delete l2r.second;
+		}
         m_LeftToRight.clear();
     }
 
